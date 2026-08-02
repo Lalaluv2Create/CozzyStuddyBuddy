@@ -46,7 +46,32 @@ public class Main{
 			
 			if(choice == 1){//Viewing Task
 				
-				System.out.println();
+				viewTasks(tasks);
+			}
+			else if(choice == 2){//Adding Task
+			
+				addTask(input, tasks);
+			}
+			
+			else if(choice == 3){//Complete Task
+				
+				completeTask(input, tasks);
+				
+			}
+		
+			else if(choice == 4){//Exit
+				running = false;
+			}
+			
+			else{
+				System.out.println("Not Viable Option");
+			}
+		}	
+	}
+	
+	public static void viewTasks(ArrayList<Task> tasks){
+		
+		System.out.println();
 				System.out.println("----- My Tasks ------");
 				System.out.println();
 				
@@ -68,59 +93,50 @@ public class Main{
 						System.out.println((i + 1) + ". " + status + " " + task.name + " (" + task.subject + ")");
 					}
 				}
-			}
-			else if(choice == 2){//Adding Task
-				
-				System.out.println();
-				
-				System.out.print("Task name: ");
-				String taskName = input.nextLine();
-				
-				System.out.print("Subject: ");
-				String subject = input.nextLine();
-				
-				Task newTask = new Task(taskName, subject);
-				
-				tasks.add(newTask);
-				
-				System.out.println("Task added successfully!");	
-			}
-			
-			else if(choice == 3){//Complete Task
-				
-				if(tasks.size() == 0){
-					System.out.println("No tasks to complete!");
-				}
-				else{
-					System.out.println("Which task did you complete? ");
-					
-					for(int i = 0; i < tasks.size(); i++){
-						
-						System.out.println((i + 1) + ". " + tasks.get(i).name);
-					}
-					
-					System.out.print("Task Number: ");
-					int taskNumber = input.nextInt();
-					input.nextLine();
-					
-					Task selectedTask = tasks.get(taskNumber - 1);
-					
-					selectedTask.completed = true;
-					
-					System.out.println();
-					System.out.println("Task completed!");
-				}
-			}
-		
-			else if(choice == 4){//Exit
-				running = false;
-			}
-			
-			else{
-				
-				System.out.println("Not Viable Option");
-			}
-		}
-		
 	}
+	
+	public static void addTask(Scanner input, ArrayList<Task> tasks){
+		
+		System.out.println();
+		
+		System.out.print("Task name: ");
+		String taskName = input.nextLine();
+				
+		System.out.print("Subject: ");
+		String subject = input.nextLine();
+				
+		Task newTask = new Task(taskName, subject);
+				
+		tasks.add(newTask);
+				
+		System.out.println("Task added successfully!");
+	}
+	
+	public static void completeTask(Scanner input, ArrayList<Task> tasks){
+		
+		if(tasks.size() == 0){
+			
+			System.out.println("No tasks to complete!");
+			}
+		else{
+			
+			System.out.println("Which task did you complete? ");
+					
+			for(int i = 0; i < tasks.size(); i++){
+						
+				System.out.println((i + 1) + ". " + tasks.get(i).name);
+			}
+					
+			System.out.print("Task Number: ");
+			int taskNumber = input.nextInt();
+			input.nextLine();
+					
+			Task selectedTask = tasks.get(taskNumber - 1);
+					
+			selectedTask.completed = true;
+				
+			System.out.println();
+			System.out.println("Task completed!");
+		}
+	}	
 }
