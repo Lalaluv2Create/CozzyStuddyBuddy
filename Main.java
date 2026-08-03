@@ -37,8 +37,9 @@ public class Main{
 			System.out.println("1. View Tasks");
 			System.out.println("2. Add Task");
 			System.out.println("3. Complete Task");
-			System.out.println("4. Delete Task");
-			System.out.println("5. Exit");
+			System.out.println("4. Edit Task");
+			System.out.println("5. Delete Task");
+			System.out.println("6. Exit");
 			System.out.println();
 			System.out.println("------");
 			
@@ -56,13 +57,14 @@ public class Main{
 			else if(choice == 3){//Complete Task
 				
 				completeTask(input, tasks);
-				
 			}
-			else if(choice == 4){//Delete Task
-				
+			else if(choice == 4){//Edit Task
+				editTask(input, tasks);
+			}
+			else if(choice == 5){//Delete Task
 				deleteTask(input, tasks);
 			}
-			else if(choice == 5){//Exit
+			else if(choice == 6){//Exit
 				running = false;
 			}
 			else{
@@ -140,6 +142,46 @@ public class Main{
 			System.out.println("Task completed!");
 		}
 	}	
+	
+	public static void editTask(Scanner input, ArrayList<Task> tasks){
+		
+		if(tasks.size() == 0){//no tasks found
+			
+			System.out.println();
+			System.out.println("No tasks to edit!");
+		}
+		else{
+			
+			System.out.println();
+			System.out.println("Which task would you like to edit? ");
+			System.out.println();
+			
+			for(int i = 0; i < tasks.size(); i++){
+				System.out.println((i + 1) + ". " + tasks.get(i).name);
+			}
+			
+			System.out.println();
+			System.out.print("Task Number: ");
+			int taskNumber = input.nextInt();
+			input.nextLine();
+			
+			//ask the user for new info to replace the old
+			Task selectedTask = tasks.get(taskNumber - 1);
+			
+			System.out.print("New task name: ");
+			String newName = input.nextLine();
+			
+			System.out.print("New subject: ");
+			String newSubject = input.nextLine();
+			
+			//updating
+			selectedTask.name = newName;
+			selectedTask.subject = newSubject;
+			
+			System.out.println("Task updated!");
+		}
+	}
+	
 	public static void deleteTask(Scanner input, ArrayList<Task> tasks){
 		
 		if(tasks.size() == 0){//no tasks found
