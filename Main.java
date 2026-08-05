@@ -107,7 +107,9 @@ public class Main{
 				status = "[ ]";
 			}
 			
-			System.out.println((i + 1) + ". " + status + " " + task.name + " (" + task.subject + ")");
+			System.out.println((i + 1) + ". " + status + " " + task.name);
+			System.out.println("	Subject: " + task.subject);
+			System.out.println("	Due: " + task.dueDate);
 		}
 	}
 	
@@ -120,8 +122,11 @@ public class Main{
 				
 		System.out.print("Subject: ");
 		String subject = input.nextLine();
+		
+		System.out.print("Due Date (MM/DD/YYYY): ");
+		String dueDate = input.nextLine();
 				
-		Task newTask = new Task(taskName, subject);
+		Task newTask = new Task(taskName, subject, dueDate);
 				
 		tasks.add(newTask);
 		saveTasks(tasks);
@@ -226,7 +231,7 @@ public class Main{
 			PrintWriter writer = new PrintWriter(new FileWriter("tasks.txt"));
 			
 			for(Task task : tasks){
-			writer.println(task.name + "," + task.subject + "," + task.completed);
+			writer.println(task.name + "," + task.subject + "," + task.dueDate + "," + task.completed);
 			}
 			
 			writer.close();
@@ -252,8 +257,8 @@ public class Main{
 				String line = fileReader.nextLine();
 				String[] parts = line.split(",");
 				
-				Task task = new Task(parts[0], parts[1]);
-				task.completed = Boolean.parseBoolean(parts[2]);
+				Task task = new Task(parts[0], parts[1], parts[2]);
+				task.completed = Boolean.parseBoolean(parts[3]);
 				tasks.add(task);
 			}
 			fileReader.close();
