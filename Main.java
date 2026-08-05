@@ -2,6 +2,11 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 
 public class Main{
 	
@@ -26,6 +31,8 @@ public class Main{
 		
 		//Task.java
 		ArrayList<Task> tasks = new ArrayList<>();
+		
+		loadTasks(tasks);
 		
 		//Menu 
 		boolean running = true;
@@ -83,20 +90,25 @@ public class Main{
 					System.out.println("No tasks yet!");
 				}
 				else{
-					for(int i = 0; i < tasks.size(); i++){
-						
-						Task task = tasks.get(i);
-						String status;
-					
-						if(task.completed){
-							status = "[X]";
-						}
-						else{
-							status = "[ ]";
-						}
-						System.out.println((i + 1) + ". " + status + " " + task.name + " (" + task.subject + ")");
-					}
+					displayTaskList(tasks);
 				}
+	}
+	
+	public static void displayTaskList(ArrayList<Task> tasks){
+		
+		for(int i = 0; i < tasks.size(); i++){
+			Task task = tasks.get(i);
+			String status;
+			
+			if(task.completed){
+				status = "[X]";
+			}
+			else{
+				status = "[ ]";
+			}
+			
+			System.out.println((i + 1) + ". " + status + " " + task.name + " (" + task.subject + ")");
+		}
 	}
 	
 	public static void addTask(Scanner input, ArrayList<Task> tasks){
@@ -112,6 +124,7 @@ public class Main{
 		Task newTask = new Task(taskName, subject);
 				
 		tasks.add(newTask);
+		saveTasks(tasks);
 				
 		System.out.println("Task added successfully!");
 	}
@@ -126,9 +139,7 @@ public class Main{
 			
 			System.out.println("Which task did you complete? ");
 					
-			for(int i = 0; i < tasks.size(); i++){		
-				System.out.println((i + 1) + ". " + tasks.get(i).name);
-			}
+			displayTaskList(tasks);
 					
 			System.out.print("Task Number: ");
 			int taskNumber = input.nextInt();
@@ -137,6 +148,7 @@ public class Main{
 			Task selectedTask = tasks.get(taskNumber - 1);
 					
 			selectedTask.completed = true;
+			saveTasks(tasks);
 				
 			System.out.println();
 			System.out.println("Task completed!");
@@ -156,9 +168,7 @@ public class Main{
 			System.out.println("Which task would you like to edit? ");
 			System.out.println();
 			
-			for(int i = 0; i < tasks.size(); i++){
-				System.out.println((i + 1) + ". " + tasks.get(i).name);
-			}
+			displayTaskList(tasks);
 			
 			System.out.println();
 			System.out.print("Task Number: ");
@@ -177,6 +187,7 @@ public class Main{
 			//updating
 			selectedTask.name = newName;
 			selectedTask.subject = newSubject;
+			saveTasks(tasks);
 			
 			System.out.println("Task updated!");
 		}
@@ -194,17 +205,61 @@ public class Main{
 			System.out.println();
 			System.out.println("Which task would you like to delete? ");
 			System.out.println();
-			for(int i = 0; i < tasks.size(); i++){
-				System.out.println((i + 1) + ". " + tasks.get(i).name);
-			}
+			displayTaskList(tasks);
 			
 			System.out.println();
 			System.out.print("Task Number: ");
 			int taskNumber = input.nextInt();
+			input.nextLine();
 				
 			tasks.remove(taskNumber - 1);
+			saveTasks(tasks);
+			
 			System.out.println();
 			System.out.println("Task deleted!");
+		}
+	}
+	
+	public static void saveTasks(ArrayList<Task> tasks){
+		
+		try{
+			PrintWriter writer = new PrintWriter(new FileWriter("tasks.txt"));
+			
+			for(Task task : tasks){
+			writer.println(task.name + "," + task.subject + "," + task.completed);
+			}
+			
+			writer.close();
+		}
+		catch(IOException e){ 
+		
+			System.out.println("Error saving tasks.");
+		}
+	}
+	
+	public static void loadTasks(ArrayList<Task> tasks){
+		
+		File file = new File("tasks.txt");
+		
+		if(!file.exists()){
+			return;
+		}
+		try{
+			Scanner fileReader = new Scanner(file);
+			
+			while(fileReader.hasNextLine()){
+				
+				String line = fileReader.nextLine();
+				String[] parts = line.split(",");
+				
+				Task task = new Task(parts[0], parts[1]);
+				task.completed = Boolean.parseBoolean(parts[2]);
+				tasks.add(task);
+			}
+			fileReader.close();
+		}
+		catch(IOException e){
+			System.out.println("Error loading tasks.");
 		}
 	}
 }
