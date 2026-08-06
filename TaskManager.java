@@ -7,11 +7,14 @@ import java.io.*;
 public class TaskManager{
 	
 	private ArrayList<Task> tasks;
+	private FileManager fileManager;
+	
 	
 	public TaskManager(){
 		
 		tasks = new ArrayList<>();
-		loadTasks();
+		fileManager = new FileManager();
+		fileManager.loadTasks(tasks);
 	}
 	
 	public void displayTaskList(){
@@ -85,7 +88,7 @@ public class TaskManager{
 		Task newTask = new Task(taskName, subject, dueDate, priority);
 				
 		tasks.add(newTask);
-		saveTasks();
+		fileManager.saveTasks(tasks);
 				
 		System.out.println("Task added successfully!");
 	}
@@ -111,7 +114,7 @@ public class TaskManager{
 				Task selectedTask = tasks.get(taskNumber - 1);
 					
 				selectedTask.completed = true;
-				saveTasks();
+				fileManager.saveTasks(tasks);
 				
 				System.out.println();
 				System.out.println("Task completed!");
@@ -184,7 +187,7 @@ public class TaskManager{
 				selectedTask.subject = newSubject;
 				selectedTask.dueDate = newDueDate;
 				selectedTask.priority = newPriority;
-				saveTasks();
+				fileManager.saveTasks(tasks);
 			
 				System.out.println("Task updated!");
 				}
@@ -218,7 +221,7 @@ public class TaskManager{
 			if(taskNumber >= 1 && taskNumber <= tasks.size()){
 				
 				tasks.remove(taskNumber - 1);
-				saveTasks();
+				fileManager.saveTasks(tasks);
 			
 				System.out.println();
 				System.out.println("Task deleted!");
@@ -230,48 +233,5 @@ public class TaskManager{
 			}
 		}
 		
-	}
-	
-	public void saveTasks(){
-		
-		try{
-			PrintWriter writer = new PrintWriter(new FileWriter("tasks.txt"));
-			
-			for(Task task : tasks){
-			writer.println(task.name + "," + task.subject + "," + task.dueDate + "," + task.priority + "," + task.completed);
-			}
-			
-			writer.close();
-		}
-		catch(IOException e){ 
-		
-			System.out.println("Error saving tasks.");
-		}
-	}
-	
-	public void loadTasks(){
-		
-		File file = new File("tasks.txt");
-		
-		if(!file.exists()){
-			return;
-		}
-		try{
-			Scanner fileReader = new Scanner(file);
-			
-			while(fileReader.hasNextLine()){
-				
-				String line = fileReader.nextLine();
-				String[] parts = line.split(",");
-				
-				Task task = new Task(parts[0], parts[1], parts[2], parts[3]);
-				task.completed = Boolean.parseBoolean(parts[4]);
-				tasks.add(task);
-			}
-			fileReader.close();
-		}
-		catch(IOException e){
-			System.out.println("Error loading tasks.");
-		}
 	}
 }
