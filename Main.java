@@ -110,6 +110,7 @@ public class Main{
 			System.out.println((i + 1) + ". " + status + " " + task.name);
 			System.out.println("	Subject: " + task.subject);
 			System.out.println("	Due: " + task.dueDate);
+			System.out.println("	Priority: "+ task.priority);
 		}
 	}
 	
@@ -125,8 +126,29 @@ public class Main{
 		
 		System.out.print("Due Date (MM/DD/YYYY): ");
 		String dueDate = input.nextLine();
+		
+		System.out.println("Priority Options:");
+		System.out.println("1. High");
+		System.out.println("2. Medium"); 
+		System.out.println("3. Low");
+		
+		System.out.println("Choose Priority: ");
+		int priorityChoice = input.nextInt();
+		input.nextLine();
+		
+		String priority;
+		
+		if(priorityChoice == 1){
+			priority = "High";
+		}
+		else if(priorityChoice == 2){
+			priority = "Medium";
+		}
+		else{
+			priority = "Low";
+		}
 				
-		Task newTask = new Task(taskName, subject, dueDate);
+		Task newTask = new Task(taskName, subject, dueDate, priority);
 				
 		tasks.add(newTask);
 		saveTasks(tasks);
@@ -189,9 +211,35 @@ public class Main{
 			System.out.print("New subject: ");
 			String newSubject = input.nextLine();
 			
+			System.out.print("New due date (MM/DD/YYYY): ");
+			String newDueDate = input.nextLine();
+			
+			System.out.println();
+			System.out.println("Priority Options:");
+			System.out.println("1. High");
+			System.out.println("2. Medium"); 
+			System.out.println("3. Low");
+			
+			System.out.print("Choose Priority: "); 
+			int priorityChoice = input.nextInt();
+			input.nextLine();
+			
+			String newPriority;
+			if(priorityChoice == 1){
+				newPriority = "High";
+			}
+			else if(priorityChoice == 2){
+				newPriority = "Medium";
+			}
+			else{
+				newPriority = "Low";
+			}
+			
 			//updating
 			selectedTask.name = newName;
 			selectedTask.subject = newSubject;
+			selectedTask.dueDate = newDueDate;
+			selectedTask.priority = newPriority;
 			saveTasks(tasks);
 			
 			System.out.println("Task updated!");
@@ -231,7 +279,7 @@ public class Main{
 			PrintWriter writer = new PrintWriter(new FileWriter("tasks.txt"));
 			
 			for(Task task : tasks){
-			writer.println(task.name + "," + task.subject + "," + task.dueDate + "," + task.completed);
+			writer.println(task.name + "," + task.subject + "," + task.dueDate + "," + task.priority + "," + task.completed);
 			}
 			
 			writer.close();
@@ -257,8 +305,8 @@ public class Main{
 				String line = fileReader.nextLine();
 				String[] parts = line.split(",");
 				
-				Task task = new Task(parts[0], parts[1], parts[2]);
-				task.completed = Boolean.parseBoolean(parts[3]);
+				Task task = new Task(parts[0], parts[1], parts[2], parts[3]);
+				task.completed = Boolean.parseBoolean(parts[4]);
 				tasks.add(task);
 			}
 			fileReader.close();
