@@ -12,6 +12,7 @@ Cozzy Studdy Buddy is a cozy Java desktop application. Designed to help students
 - Set due dates
 - Set task priorities (High, Medium, Low)
 - Automatic save/load using text files
+- Object-oriented task management
 - Modular code using multiple Java classes and methods
 
 ## Planned Features:
