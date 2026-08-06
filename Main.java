@@ -50,32 +50,36 @@ public class Main{
 			System.out.println();
 			System.out.println("------");
 			
-			int choice = input.nextInt();
-			input.nextLine();
-			
-			if(choice == 1){//Viewing Task
+			if(input.hasNextInt()){
 				
-				viewTasks(tasks);
-			}
-			else if(choice == 2){//Adding Task
+				int choice = input.nextInt();
+				input.nextLine();
 			
-				addTask(input, tasks);
-			}
-			else if(choice == 3){//Complete Task
-				
-				completeTask(input, tasks);
-			}
-			else if(choice == 4){//Edit Task
-				editTask(input, tasks);
-			}
-			else if(choice == 5){//Delete Task
-				deleteTask(input, tasks);
-			}
-			else if(choice == 6){//Exit
-				running = false;
+				if(choice == 1){//Viewing Task
+					viewTasks(tasks);
+				}
+				else if(choice == 2){//Adding Task
+					addTask(input, tasks);
+				}
+				else if(choice == 3){//Complete Task	
+					completeTask(input, tasks);
+				}
+				else if(choice == 4){//Edit Task
+					editTask(input, tasks);
+				}
+				else if(choice == 5){//Delete Task
+					deleteTask(input, tasks);
+				}
+				else if(choice == 6){//Exit
+					running = false;
+				}
+				else{
+					System.out.println("Not Viable Option");
+				}
 			}
 			else{
-				System.out.println("Not Viable Option");
+				System.out.println("Please enter a number:");
+				input.nextLine();
 			}
 		}	
 	}
@@ -171,14 +175,22 @@ public class Main{
 			System.out.print("Task Number: ");
 			int taskNumber = input.nextInt();
 			input.nextLine();
-					
-			Task selectedTask = tasks.get(taskNumber - 1);
-					
-			selectedTask.completed = true;
-			saveTasks(tasks);
+			
+			if(taskNumber >= 1 && taskNumber <= tasks.size()){
 				
-			System.out.println();
-			System.out.println("Task completed!");
+				Task selectedTask = tasks.get(taskNumber - 1);
+					
+				selectedTask.completed = true;
+				saveTasks(tasks);
+				
+				System.out.println();
+				System.out.println("Task completed!");
+			}
+			else{
+				
+				System.out.println();
+				System.out.println("Invalid task number!");
+			}
 		}
 	}	
 	
@@ -202,47 +214,55 @@ public class Main{
 			int taskNumber = input.nextInt();
 			input.nextLine();
 			
-			//ask the user for new info to replace the old
-			Task selectedTask = tasks.get(taskNumber - 1);
+			if(taskNumber >= 1 && taskNumber <= tasks.size()){
+				
+				//ask the user for new info to replace the old
+				Task selectedTask = tasks.get(taskNumber - 1);
 			
-			System.out.print("New task name: ");
-			String newName = input.nextLine();
+				System.out.print("New task name: ");
+				String newName = input.nextLine();
 			
-			System.out.print("New subject: ");
-			String newSubject = input.nextLine();
+				System.out.print("New subject: ");
+				String newSubject = input.nextLine();
 			
-			System.out.print("New due date (MM/DD/YYYY): ");
-			String newDueDate = input.nextLine();
+				System.out.print("New due date (MM/DD/YYYY): ");
+				String newDueDate = input.nextLine();
 			
-			System.out.println();
-			System.out.println("Priority Options:");
-			System.out.println("1. High");
-			System.out.println("2. Medium"); 
-			System.out.println("3. Low");
+				System.out.println();
+				System.out.println("Priority Options:");
+				System.out.println("1. High");
+				System.out.println("2. Medium"); 
+				System.out.println("3. Low");
 			
-			System.out.print("Choose Priority: "); 
-			int priorityChoice = input.nextInt();
-			input.nextLine();
+				System.out.print("Choose Priority: "); 
+				int priorityChoice = input.nextInt();
+				input.nextLine();
 			
-			String newPriority;
-			if(priorityChoice == 1){
-				newPriority = "High";
-			}
-			else if(priorityChoice == 2){
-				newPriority = "Medium";
-			}
+				String newPriority;
+				if(priorityChoice == 1){
+					newPriority = "High";
+				}
+				else if(priorityChoice == 2){
+					newPriority = "Medium";
+				}
+				else{
+					newPriority = "Low";
+				}
+			
+				//updating
+				selectedTask.name = newName;
+				selectedTask.subject = newSubject;
+				selectedTask.dueDate = newDueDate;
+				selectedTask.priority = newPriority;
+				saveTasks(tasks);
+			
+				System.out.println("Task updated!");
+				}
 			else{
-				newPriority = "Low";
+				
+				System.out.println();
+				System.out.println("Invalid task number!");
 			}
-			
-			//updating
-			selectedTask.name = newName;
-			selectedTask.subject = newSubject;
-			selectedTask.dueDate = newDueDate;
-			selectedTask.priority = newPriority;
-			saveTasks(tasks);
-			
-			System.out.println("Task updated!");
 		}
 	}
 	
@@ -264,13 +284,22 @@ public class Main{
 			System.out.print("Task Number: ");
 			int taskNumber = input.nextInt();
 			input.nextLine();
-				
-			tasks.remove(taskNumber - 1);
-			saveTasks(tasks);
 			
-			System.out.println();
-			System.out.println("Task deleted!");
+			if(taskNumber >= 1 && taskNumber <= tasks.size()){
+				
+				tasks.remove(taskNumber - 1);
+				saveTasks(tasks);
+			
+				System.out.println();
+				System.out.println("Task deleted!");
+			}
+			else{
+				
+				System.out.println();
+				System.out.println("Invalid task number!");
+			}
 		}
+		
 	}
 	
 	public static void saveTasks(ArrayList<Task> tasks){
